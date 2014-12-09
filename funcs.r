@@ -190,6 +190,53 @@ buff_ext <- function(pts, center, buff = 0.03){
 }
 
 ######
+#' get seagrass depth estimates for an entire sample grid
+#'
+#' @param grid_in SpatialPoints object of locations to estimate seagrass depth, created using \code{\link{grid_est}}
+#' @param dat_in SpatialPointsDataFrame of seagrass depth points for sampling with \code{grid_in}
+#' @param buff radius of buffer in dec degrees around each sample location for estimating seagrass depth estimates
+#' @param rem_miss logical indicating if unestimable points are removed from the output, default \code{TRUE}
+#' @param trace logical indicating if progress is returned in console, default \code{FALSE}
+#' 
+#' @details This function estimates three seagrass depth of colonization values for each point in a sampling grid.  Functions \code{\link{buff_ext} and \code{\link{doc_est}} are used iteratively for each point in the sample grid.
+#' 
+#' @import sp
+#' 
+#' @return 
+doc_est_grd <- function(grid_in, dat_in, radius = 0.06, rem_miss = TRUE, trace = FALSE){
+      
+  # get estimates for each point
+  maxd <- vector('list', length = length(grid_in))
+  for(i in 1:length(grid_in)){
+    
+    if(trace) cat(i, 'of', length(grid_in), '\n')
+      
+    eval_pt <- grid_in[i, ]
+    ests <- try({
+      buff_pts <- buff_ext(dat_in, eval_pt, buff = radius)
+      est_pts <- data.frame(buff_pts)
+      doc_single <- doc_est(est_pts)[c('sg_max', 'doc_med', 'doc_max')]
+      unlist(doc_single)
+    }, silent = T)
+    
+  	if('try-error' %in% class(ests)) ests <- rep(NA, 3)
+    
+    maxd[[i]] <- ests
+    
+  }
+    
+	# combine results in data_frame, convert to spatialpoints
+	maxd <- data.frame(do.call('rbind', maxd)) 
+  maxd <- sp::SpatialPointsDataFrame(coords = coordinates(grid_in), data = maxd)
+  
+  # remove missing
+  if(rem_miss) maxd <- maxd[!is.na(maxd@data[, 1]), ]
+ 
+  return(maxd)
+  
+}
+
+######
 # krige results from spatial grid of seagrass depth of col ests
 #
 # @param maxd data frame of maximum depth estimates with Var1 and Var2 columns of coordinates

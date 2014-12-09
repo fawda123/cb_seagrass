@@ -7,6 +7,9 @@ library(scales)
 library(RColorBrewer)
 library(gridExtra)
 library(sp)
+library(bitops)
+library(labeling)
+library(dichromat)
 
 # functions to use
 source('funcs.r')
