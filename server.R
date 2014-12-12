@@ -146,7 +146,7 @@ shinyServer(function(input, output) {
    	# get data used to estimate depth of col for plotting
 		est_pts <- data.frame(buff_pts)
     
-#       browser() 
+#     browser() 
     
 		# data
 		dat <- doc_est(est_pts)

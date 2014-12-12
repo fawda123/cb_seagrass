@@ -1,4 +1,14 @@
 library(shiny)
+library(reshape2) 
+library(plyr)
+library(ggplot2)
+library(scales)
+library(RColorBrewer)
+library(gridExtra)
+library(sp)
+library(bitops)
+library(labeling)
+library(dichromat)
 
 # Define UI for application
 shinyUI(pageWithSidebar(
@@ -15,17 +25,17 @@ shinyUI(pageWithSidebar(
                 selected = 'POCMH'),
       
     uiOutput("pts"), 
-    
+
+    checkboxInput("point_lab", 
+              label = "Label points as numbers",
+              value = F),
+
     numericInput("grid_spc", 
                  label = h3("Grid spacing (dec. deg.)"), 
                  min=0.005, 
                  max=0.1, 
                  value=0.01, step = 0.001),
 
-    checkboxInput("point_lab", 
-                  label = "Label points as numbers",
-                  value = F),
-    
     numericInput("radius", 
                  label = h3('Radius (dec. deg.)'), 
                  min=0, 
