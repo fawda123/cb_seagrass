@@ -60,7 +60,7 @@ shinyServer(function(input, output) {
         geom_polygon(fill = 'lightgrey', aes(group = piece)) +
         geom_polygon(
             data = seg_leg,
-            aes(long, lat, group = piece, fill = 'Segment'),
+            aes(long, lat, group = id, fill = 'Segment'),
           ) +
         geom_polygon(
               data = sgcover,
