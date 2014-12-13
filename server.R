@@ -111,8 +111,10 @@ shinyServer(function(input, output) {
     }, silent = T)
     if('try-error' %in% class(buff_pts)) return()
     
+    browser()
+    
     p1 <- ggplot(seg_leg, aes(long, lat)) + 
-      geom_polygon(fill = 'lightblue', aes(group = piece)) +
+      geom_polygon(fill = 'lightblue', aes(group = id)) +
       theme_classic() +
       coord_equal() +
   		xlab('Longitude') +
@@ -145,8 +147,6 @@ shinyServer(function(input, output) {
   	##
    	# get data used to estimate depth of col for plotting
 		est_pts <- data.frame(buff_pts)
-    
-#     browser() 
     
 		# data
 		dat <- doc_est(est_pts)
@@ -212,8 +212,6 @@ shinyServer(function(input, output) {
       
     }
     
-#       browser()
-    
     p3 <- ggplot(bounds, aes(long, lat)) + 
       geom_polygon(fill = 'grey', aes(group = piece)) +
       theme_classic() +
@@ -222,7 +220,7 @@ shinyServer(function(input, output) {
     		ylab('Latitude') +
       geom_polygon(
         data = seg_leg,
-        aes(long, lat, group = piece), 
+        aes(long, lat, group = id), 
         fill = 'lightblue'
       ) +
     theme(text = element_text(size=20))
