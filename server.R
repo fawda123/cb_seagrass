@@ -60,7 +60,7 @@ shinyServer(function(input, output) {
         geom_polygon(fill = 'lightgrey', aes(group = piece)) +
         geom_polygon(
             data = seg_leg,
-            aes(long, lat, group = id, fill = 'Segment'),
+            aes(long, lat, group = group, fill = 'Segment'),
           ) +
         geom_polygon(
               data = sgcover,
@@ -111,10 +111,10 @@ shinyServer(function(input, output) {
     }, silent = T)
     if('try-error' %in% class(buff_pts)) return()
     
-    browser()
+#     browser()
     
     p1 <- ggplot(seg_leg, aes(long, lat)) + 
-      geom_polygon(fill = 'lightblue', aes(group = id)) +
+      geom_polygon(fill = 'lightblue', aes(group = group)) +
       theme_classic() +
       coord_equal() +
   		xlab('Longitude') +
@@ -220,7 +220,7 @@ shinyServer(function(input, output) {
     		ylab('Latitude') +
       geom_polygon(
         data = seg_leg,
-        aes(long, lat, group = id), 
+        aes(long, lat, group = group), 
         fill = 'lightblue'
       ) +
     theme(text = element_text(size=20))
